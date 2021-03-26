@@ -88,8 +88,6 @@ def test_load_resources(input_resource_type, output_resource_type, server_url):
 
 def test_convert_patient_record_entry_to_fhir():
 
-    # TODO: NO ASSERTS, JUST TESTING NO VALIDATION ERROR RAISED
-
     fhir_handler = FHIRHandler()
 
     patient = PatientAgent(
@@ -177,15 +175,6 @@ def test_convert_patient_record_entry_to_fhir():
         save_path=bundle_path,
     )
 
-    # TODO: patient_abm.data_handler.fhir.FHIRValidationError: Failed
-    # to validate FHIR data using server operation at
-    # http://hapi.fhir.org/baseR4/Bundle/$validate.
-    # Status code returned: 400
     bundle = fhir_handler.load(
         bundle_path, "Bundle", server_url=None, validate=True
     )
-
-
-def test_convert_fhir_to_patient_record_entry():
-    # TODO
-    pass

@@ -20,7 +20,7 @@ class Gender(str, Enum):
 
 
 class PatientConfig(BaseModel):
-    # TODO: add more? check conver to these types from CSV
+    # TODO: add more?
     patient_id: Union[int, str]
     gender: Gender
     birth_date: Union[str, datetime.datetime]
@@ -30,7 +30,7 @@ class PatientConfig(BaseModel):
 
 
 class EnvironmentConfig(BaseModel):
-    # TODO: add more? check conver to these types from CSV
+    # TODO: add more?
     environment_id: Union[int, str]
     environment_type: Optional[str]
     name: Optional[str]

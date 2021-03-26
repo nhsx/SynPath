@@ -103,7 +103,12 @@ def _initialize_environments(config: dict):
 
 
 def _initialize_default_interaction_mapper() -> Dict[str, Callable]:
-    # TODO: how to add here automatically
+    # TODO: improve this that default interactions are added more
+    # robustly. In fact, it might be possible to remove this and just
+    # add default interactions direclty in the Environment, see for
+    # instance the way self.interactions is set in the EnviromentAgent
+    # class constructor (which itself is not an optimal implementation
+    # but provides examples of different ways to perform this)
     return {
         "death": death,
     }

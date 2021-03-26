@@ -52,6 +52,10 @@ def an_interaction_1(
     # ADD CODE
     # Makes new patient record entries, decides next environment transition
     # probability and time. Can update patient and environment
+    # Note that the intelligence layer, which receives the outputs of the
+    # interaction functions, must be able to handle cases where
+    # next_environment_id_to_prob and next_environment_id_to_time are empty
+    # (these are the outputs of the default death interaction)
 
     return (
         patient,
