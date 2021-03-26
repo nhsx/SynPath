@@ -419,9 +419,10 @@ def get_fhir_to_patient_record_entry_map():
 
 
 def get_supported_fhir_resources():
-    # TODO: can use this to validate whether intelligence is generating
-    #  valid resource types
     return set(get_fhir_to_patient_record_entry_map())
+
+def get_required_entry_fields():
+    return {"name", "start", "resource_type"}
 
 
 def convert_fhir_to_patient_record_entry(
