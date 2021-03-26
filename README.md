@@ -289,6 +289,11 @@ duplication. `patient_record_duplicate_action` decides the action to take if a
 duplicate is found. If it is set to "add", the new entry is added, whereas if
 if it is set to "skip" the entry won't be added.
 
+### Breast cancer pathway config
+
+As an illustration for how a breast cancer pathway might look, we have provided a `config.json` for this in `template/breast_cancer`. This is simply an initial version of how this script could be configured for such a pathway, but this template and the intelligence layer can be configured to facilitate more complex dynamics.
+
+
 ## The `intelligence` layer
 
 The `intelligence` layer is a directory of python scripts. The location of the
