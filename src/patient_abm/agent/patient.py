@@ -279,9 +279,9 @@ class PatientAgent(Agent):
             resource and becomes the first entry in the patient record,
             by default None
         kwargs : dict
-            Keyword arguments, passed to parent EnvironmentAgent class and
-            set as attributes. If key starts with prefix 'patient__' it will
-            get added to the profile (with prefix removed)
+            Keyword arguments, set as attributes. If key starts with prefix
+            'patient__' it will also get added to the patient_profile
+            (with prefix removed)
         """
 
         if gender not in {"male", "female"}:

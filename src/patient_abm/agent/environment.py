@@ -68,7 +68,7 @@ class EnvironmentAgent(Agent):
         organization : Optional[dict], optional
             Organization of the environment, by default None
         practitioners : Optional[list], optional
-            List containing one or more practitioners at this environments,
+            List containing practitioner(s) information,
             by default None
         interactions : Optional[List[str]], optional
             List of interaction names that the intelligence layer can
@@ -88,8 +88,7 @@ class EnvironmentAgent(Agent):
             Time agent is created, by default None. If not supplied, will be
             automatically set by datetime.datetime.now()
         kwargs : dict
-            Keyword arguments, passed to parent EnvironmentAgent class and
-            set as attributes
+            Keyword arguments set as attributes
         """
 
         super().__init__(id_=id_, created_at=created_at)
