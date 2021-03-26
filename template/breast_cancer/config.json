@@ -1,0 +1,98 @@
+{
+    "patients": [
+        {
+            "patient_id": 1,
+            "gender": "female",
+            "birth_date": "1992-05-24",
+            "name": "Lois"
+        }
+    ],
+    "environments": [
+        {
+            "environment_id": 0,
+            "name": "gp",
+            "interactions": [
+                "gp.physical_examination",
+                "gp.manual_breast_examination",
+                "general.service_request",
+                "general.book_appointment"
+            ],
+            "patient_present": true
+        },
+        {
+            "environment_id": 1,
+            "name": "screening_clinic",
+            "interactions": [
+                "screening.mammography",
+                "screening.biopsy_and_ultrasound",
+                "general.diagnostic_report_request"
+            ],
+            "patient_present": true
+        },
+        {
+            "environment_id": 2,
+            "name": "lab",
+            "interactions": [
+                "measurement.her2",
+                "measurement.progesterone",
+                "measurement.oestrogen",
+                "general.make_diagnosis",
+                "general.write_diagnostic_report"
+            ],
+            "patient_present": false
+        },
+        {
+            "environment_id": 3,
+            "name": "mdtm",
+            "interactions": [
+                "mdtm.care_plan"
+            ],
+            "patient_present": false
+        },
+        {
+            "environment_id": 4,
+            "name": "surgery",
+            "interactions": [
+                "surgery.perform_lumpectomy",
+                "general.contract_infection"
+            ],
+            "patient_present": false
+        },
+        {
+            "environment_id": 5,
+            "name": "oncology",
+            "interactions": [
+                "treatment.radiotherapy",
+                "treatment.chemotherapy",
+                "general.contract_infection",
+                "general.recovery"
+            ],
+            "patient_present": true
+        },
+        {
+            "environment_id": 6,
+            "name": "a_and_e",
+            "interactions": [
+                "treatment.antibiotics",
+                "treatment.antivirals",
+                "diagnosis.sepsis",
+                "general.recovery"
+            ],
+            "patient_present": true
+        }
+    ],
+    "intelligence_dir": "<intelligence_dir>",
+    "save_dir": "<save_dir>",
+    "initial_environment_ids": {
+        "from_id": 0
+    },
+    "stopping_condition": {
+        "max_num_steps": 100
+    },
+    "log_every": 1,
+    "log_intermediate": false,
+    "hard_stop": 100,
+    "log_patient_record": true,
+    "fhir_server_validate": true,
+    "patient_record_duplicate_action": "skip"
+}
