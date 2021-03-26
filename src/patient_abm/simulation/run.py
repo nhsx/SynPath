@@ -85,7 +85,6 @@ def _update_patient_and_environment(
     environment.update(patient, update_data.get("patient_data"))
 
 
-# TODO: talk about default updating
 def run_patient_simulation(
     simulation_id: Union[str, int],
     patient: PatientAgent,
@@ -242,8 +241,8 @@ def run_patient_simulation(
             update_data,
             next_environment_id,
             interaction_names,
-            next_environment_id_to_prob,  # TODO; currenly not saved
-            next_environment_id_to_time,  # TODO; currenly not saved
+            next_environment_id_to_prob,  # TODO; currently not saved
+            next_environment_id_to_time,  # TODO; currently not saved
         ) = intelligence(
             patient, environment, patient_time, interaction_mapper
         )
@@ -290,7 +289,7 @@ def run_patient_simulation(
                 patient_logger,
                 log_last_n_record_entries=last_n_patient_record_entries,
             )
-            # TODO: environment.log_state()?
+
             simulation_log_msgs.append(
                 _create_simulation_log_msg(
                     "running",
@@ -426,7 +425,7 @@ def simulate(config: dict) -> dict:
     ]
 
     # TODO: decide whether save_dir naming convention / folder
-    # depth structure should change for multiple patients
+    # depth structure should be nested for multiple patients
 
     patient_id_to_agents = {}
 

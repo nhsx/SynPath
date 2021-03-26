@@ -4,7 +4,6 @@ from patient_abm.simulation.template import parse_config
 TEST_DATA_DIR = PATIENT_ABM_DIR / "tests" / "data"
 
 
-# TODO: remove hardcoded paths from config jsons and elsewhere
 def test_parse_config():
     for i in range(3):
         config_path = TEST_DATA_DIR / f"config_{i}.json"

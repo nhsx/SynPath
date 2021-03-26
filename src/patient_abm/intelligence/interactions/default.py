@@ -40,16 +40,13 @@ def death(
         Dictionary mapping next environment IDs to time delta (time to next
         environment) (empty in this case)
     """
-    # TODO: any other default FHIR resource to add?
+
     patient.record[0].entry["end"] = datetime_to_string(patient_time)
     patient.alive = False
 
-    # TODO: mention in docs intelligence needs to handle cases
-    # when this dicts are empty
     next_environment_id_to_prob = {}
     next_environment_id_to_time = {}
 
-    # TODO: do we want this update data? just return new_patient_record_entries
     update_data = {"new_patient_record_entries": []}
     return (
         patient,

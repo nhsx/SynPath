@@ -9,9 +9,11 @@ from patient_abm.agent.patient import PatientAgent
 from patient_abm.data_handler.fhir import FHIRHandler
 
 
-# TODO: does environment need a log state?
 class EnvironmentAgent(Agent):
     """Class for environment agent"""
+
+    # NOTE: in future, may want to add a log_state method to the
+    # EnvironmentAgent, if, say, dynamics are implemented
 
     serialisable_attributes = [  #  TODO: change to serializable_attributes
         "environment_id",
@@ -34,14 +36,14 @@ class EnvironmentAgent(Agent):
     def __init__(
         self,
         environment_id: Union[str, int],
-        environment_type: str = "",  #  TODO: include this? what should it be?
+        environment_type: str = "",
         name: str = "",
         patient_present: bool = True,
         location: Optional[dict] = None,
         organization: Optional[dict] = None,
         practitioners: Optional[list] = None,
         interactions: Optional[List[str]] = None,
-        patient_data: Optional[DefaultDict] = None,  # TODO: call it storage?
+        patient_data: Optional[DefaultDict] = None,
         patient_interaction_history: Optional[DefaultDict] = None,
         capacity: Optional[List[dict]] = None,
         wait_time: Optional[List[dict]] = None,
@@ -103,11 +105,11 @@ class EnvironmentAgent(Agent):
         self.organization = organization
         self.practitioners = practitioners
 
-        # TODO: better way to add default interactions?
-        # maybe in simulation initialize?
+        # TODO: Implement more robust / automated way to add default
+        # interactions. Also a method to override them if required
         # TODO: each subclass env can have different default interactions
-        # -> make into attrirbtue?
-        default_interactions = ["death"]  # TODO: names need to match
+        # -> make into attribute?
+        default_interactions = ["death"]
         interactions_to_add = [] if interactions is None else interactions
         self.interactions = sorted(
             set(default_interactions + interactions_to_add)
@@ -122,17 +124,12 @@ class EnvironmentAgent(Agent):
             else patient_interaction_history
         )
 
-        # TODO: capacity and wait_time should be
-        # list of dicts, where each dict has timestamp and
-        # capacity / wait_time value? or a function where can plug in a time
-        # and get value - e.g. busy between 9-5, mon-fri
         self.capacity = [] if capacity is None else capacity
         self.wait_time = [] if wait_time is None else wait_time
 
         # Store kwargs for serialization
         self.kwargs = kwargs
 
-        # TODO: these kwargs are assumed to not be FHIR resources
         for key, value in kwargs.items():
             if key not in inspect.getmembers(self):
                 self.__setattr__(key, value)
@@ -143,9 +140,10 @@ class EnvironmentAgent(Agent):
                 )
 
     def _update_patient_interaction_history(self, patient: PatientAgent):
-        # NOTE: what if multiple record entries are written in a single
-        #  interaction, but the entries have different times? Count
-        # each one?
+        # TODO: If multiple record entries are written in a single
+        # simulation step, decide whether to refer to all here
+        # (can get this info by looking for all patient.record entries with
+        # same simulation_step)
         self.patient_interaction_history[patient.patient_id].append(
             {
                 "time": patient.record[-1].patient_time,
@@ -182,7 +180,7 @@ class EnvironmentAgent(Agent):
     @classmethod
     def from_fhir(
         cls,
-        fhir_paths: List[Union[Path, str]],  # TODO: multiple files?
+        fhir_paths: List[Union[Path, str]],
         resource_types: List[str],
         environment_id: Union[str, int],
         server_url: Optional[str] = None,
@@ -192,8 +190,8 @@ class EnvironmentAgent(Agent):
         Load environment from FHIR Location, Organization, Practitioner
         resources.
 
-        NOTE: this method has not yet been tested. We recommend further
-        development if it is required.
+        NOTE: this method has not been used very much, and could potentially
+        be removed. We recommend further development if it is required.
         """
         # TODO: check for address consistency?
         # TODO: selectively choose information from input fhir_paths?
@@ -218,7 +216,7 @@ class EnvironmentAgent(Agent):
                 "Location, Organization, Practitioner"
             )
 
-        # TODO: may want to convert to internal representation of
+        # TODO: may want to convert to a simpler internal representation of
         # "Location, Organization, Practitioner"
 
         fhir_inputs = defaultdict(list)
@@ -240,9 +238,6 @@ class EnvironmentAgent(Agent):
         # FHIR resource_type which is the same as the name of an attribute,
         # which might be appearing in kwargs, or gets set and overwrites wrong
         # thing
-
-        # TODO: how to input procedures? Will it have to be in kwargs?
-        # Or from a file?
 
         return cls(
             environment_id=environment_id,

@@ -24,7 +24,6 @@ PatientAgentType = TypeVar("PatientAgentType", bound="PatientAgent")
 
 
 # TODO: change name to wrap_entry
-# TODO: apply wrap_fhir_resource to from_fhir
 def wrap_fhir_resource(
     entry: dict,
     patient_time: Union[str, datetime.datetime],
@@ -68,8 +67,6 @@ def wrap_fhir_resource(
     dict
         A wrapped entry
     """
-    # TODO: add docstring
-    # TODO: add 'real_time', 'record_index', and 'entry_id'?
     return {
         "patient_time": string_to_datetime(patient_time),
         "environment_id": environment_id,
@@ -85,19 +82,14 @@ def wrap_fhir_resource(
 
 @dataclass
 class PatientRecordEntry:
-    # For complete uniqueness the pair (name, patient_time) can be
-    # used as combined index
-    # TODO: are all these needed?
     real_time: Union[str, datetime.datetime]
     patient_time: Union[str, datetime.datetime]
     environment_id: Optional[Union[str, int]]
     interactions: Optional[List[str]]
     simulation_step: Optional[int]
-    fhir_resource_time: Optional[Union[str, datetime.datetime]]
+    fhir_resource_time: Optional[Union[str, datetime.datetime]] # TODO: remove
     fhir_resource_type: str
-    fhir_resource: dict  # raw FHIR
-    # TODO: careful with record_index when validating
-    # / deduplicating / time ordering
+    fhir_resource: dict
     record_index: int
     entry_id: str
     entry: dict
@@ -107,7 +99,6 @@ class PatientRecordEntry:
 class PatientAgent(Agent):
     """Class for patient agent"""
 
-    # TODO: add more!
     serialisable_attributes = [  #  TODO: change to serializable_attributes
         "patient_id",
         "gender",
@@ -137,10 +128,9 @@ class PatientAgent(Agent):
         "real_end_time",
         "active",
         "count",
-        "record_index",  #  TODO: should be a list!!! record_indices
+        "record_index",  #  TODO: Consider converting to list of record_indices
     ]
 
-    # TODO: expose fhir_resource_types below?
     _dataframe_attributes_to_kwargs = {
         "conditions": {
             "additional_core_fields": ["code"],
@@ -159,9 +149,8 @@ class PatientAgent(Agent):
     def __init__(
         self,
         patient_id: Union[str, int],
-        gender: str,  # TODO: validate
+        gender: str,
         birth_date: Union[str, datetime.datetime],
-        # TODO: change start_time so not start with patient_
         start_time: Union[str, datetime.datetime] = None,
         name: Optional[str] = None,
         conditions: Optional[Union[pandas.DataFrame, List[dict]]] = None,
@@ -211,7 +200,7 @@ class PatientAgent(Agent):
             fhir_resource_type Condition. A condition is active until a
             patient record entry appears
             with the same 'name' and 'start' fields also has a non-null
-            'end' date.
+            'end' date. The table should have unique (name, start) pair index.
         medications : Optional[Union[pandas.DataFrame, List[dict]]], optional
             Patient outstanding actions, by default None.
             Internally represented as a pandas dataframe with the following
@@ -229,7 +218,7 @@ class PatientAgent(Agent):
             fhir_resource_type MedicationRequest.
             A medication is active until a patient record entry appears
             with the same 'name' and 'start' fields also has a non-null
-            'end' date.
+            'end' date. The table should have unique (name, start) pair index.
         actions : Optional[Union[pandas.DataFrame, List[dict]]], optional
             Patient actions that they might have outsanding,
             e.g. and upcoming appointment, by default None.
@@ -248,7 +237,7 @@ class PatientAgent(Agent):
             fhir_resource_types "Appointment" and "ServiceRequest".
             An action is active until a patient record entry appears
             with the same 'name' and 'start' fields also has a non-null
-            'end' date.
+            'end' date. The table should have unique (name, start) pair index.
         conditions_custom_fields : List[str], optional
             Additional custom fields to add to conditions table, e.g.
             ["severity"], by default []
@@ -333,8 +322,8 @@ class PatientAgent(Agent):
                 fhir_resource_type="Patient",
                 fhir_resource=None,
                 record_index=0,
-                # NOTE: entry_id is used for FHIR resource id, which does
-                # not allow colons (hence use uuid hex and not urn)
+                # NOTE: entry_id is used lated for FHIR resource id, which
+                # does not allow colons (hence use uuid hex and not urn)
                 entry_id=make_uuid("hex"),
                 entry=profile,
                 tag="patient_profile",
@@ -352,7 +341,6 @@ class PatientAgent(Agent):
         # Store kwargs for serialization
         self.kwargs = kwargs
 
-        # TODO: these kwargs are assumed to not go in patient record
         for key, value in kwargs.items():
             if key not in inspect.getmembers(self):
                 self.__setattr__(key, value)
@@ -585,7 +573,7 @@ class PatientAgent(Agent):
                             else string_to_datetime(entry.real_time)
                         ),
                         "record_index": entry.record_index,
-                        "count": count + 1,  # TODO
+                        "count": count + 1,
                         "active": entry.entry.get("end") is None,
                     }
                     for col in df.columns:
@@ -600,9 +588,6 @@ class PatientAgent(Agent):
                         [df, pandas.DataFrame([new_row])]
                     ).reset_index(drop=True)
         setattr(self, attrs_name, df)
-
-        # TODO: update active?
-        # TODO: validate - (condition, start) unique, and active?
 
     def _sort_record(self, by: str = "record_index"):
         profile = self.record[0]
@@ -771,7 +756,7 @@ class PatientAgent(Agent):
 
         last_record_entry = self.record[-1]
 
-        # TODO: may need to convert patient times to nicer format if
+        # TODO: may want to convert patient times to nicer format if
         # e.g. days, years etc
         patient_time_elapsed = last_record_entry.patient_time - self.start_time
 

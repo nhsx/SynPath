@@ -11,7 +11,7 @@ from patient_abm.data_handler._fhir_resources import *  # noqa
 from patient_abm.data_handler.base import DataHandler
 from patient_abm.utils import datetime_to_string
 
-# TODO: NOTE: this is an external dependency that might go away
+# NOTE: we recommend implementing a custom FHIR validation server
 HAPI_FHIR_SERVER_4 = "http://hapi.fhir.org/baseR4"
 
 
@@ -89,9 +89,8 @@ class FHIRHandler(DataHandler):
             if r.status_code == 200:
                 return True
             elif r.status_code not in [404, 504]:
-                # TODO: any other codes which indicate a server error as
+                # TODO: add any other codes which indicate a server error as
                 # opposed to validation error
-                # TODO: print more descriptive message (use eval(r.text))
                 raise FHIRValidationError(
                     "Failed to validate FHIR data using server operation at "
                     f"{url}. Status code returned: {r.status_code}. Message "
@@ -117,7 +116,7 @@ class FHIRHandler(DataHandler):
     def load(
         self,
         path: Union[Path, str],
-        input_resource_type: str,  # TODO: make version where this is inferred
+        input_resource_type: str,
         output_resource_type: str = None,
         xml_schema_dir: Optional[Union[Path, str]] = None,
         server_url: str = HAPI_FHIR_SERVER_4,
@@ -163,10 +162,6 @@ class FHIRHandler(DataHandler):
             If no resource of type output_resource_type is found in input
             bundle
         """
-
-        # TODO: make version without validation?
-        # TODO: make version without requiring user to specify
-        # input_resource_type
 
         if path.suffix == ".json":
 
@@ -224,8 +219,6 @@ class FHIRHandler(DataHandler):
                     f"No FHIR resource {output_resource_type} in {path}."
                 )
             elif len(filtered_data) > 1:
-                # TODO: check whether FHIR Bundle already checks this in its
-                # validation
                 if output_resource_type.lower() == "patient":
                     raise FHIRValidationError(
                         "FHIR data contains more than one patient resource."
@@ -366,7 +359,8 @@ def get_fhir_to_patient_record_entry_map():
             ("performedPeriod", "start"): "start",
             ("performedPeriod", "end"): "end",
         },
-        # NOTE: currently no end, calculate from start and duration?
+        # NOTE: currently no end in MedicationRequest, calculate from start
+        # and duration?
         "MedicationRequest": {
             ("contained", 0, "code", "coding", 0, "display"): "name",
             ("contained", 0, "code", "coding", 0, "code"): "code",
@@ -554,7 +548,7 @@ def convert_patient_record_entry_to_fhir(
 
     if resource_type == "Encounter":
 
-        resource = {
+        resource = {            
             # status: planned | arrived | triaged | in-progress | onleave
             # | finished | cancelled +.
             "status": "finished",  # required
@@ -568,7 +562,7 @@ def convert_patient_record_entry_to_fhir(
 
         set_subject(resource, patient)
 
-        if "code" in _entry:  # TODO: change to _entry.get("code") is not None:
+        if "code" in _entry: 
             resource["class"]["code"] = _entry["code"]
 
         if _entry.get("end") is not None:
@@ -739,7 +733,6 @@ def convert_patient_record_entry_to_fhir(
         resource["id"] = str(entry.entry_id)
 
     resource["resourceType"] = resource_type
-    # resource["text"] = {"status": "generated", "div": ""} # TODO
 
     if entry.fhir_resource is None:
         return resource

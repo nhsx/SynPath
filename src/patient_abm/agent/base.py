@@ -49,7 +49,7 @@ class Agent:
         self.tz = tz
 
         if created_at is None:
-            # TODO: do timezones better
+            # TODO: improve timezone handling
             self.created_at = datetime.datetime.now(tz=self.tz)
         else:
             self.created_at = string_to_datetime(created_at)

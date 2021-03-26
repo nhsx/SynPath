@@ -10,7 +10,6 @@ import dateutil.parser
 from dateutil.tz import UTC
 
 
-# TODO: mention timezone
 def string_to_datetime(
     dt: Optional[Union[str, datetime.datetime]],
     format_str: Optional[str] = None,
