@@ -87,7 +87,7 @@ class PatientRecordEntry:
     environment_id: Optional[Union[str, int]]
     interactions: Optional[List[str]]
     simulation_step: Optional[int]
-    fhir_resource_time: Optional[Union[str, datetime.datetime]] # TODO: remove
+    fhir_resource_time: Optional[Union[str, datetime.datetime]]  # TODO: remove
     fhir_resource_type: str
     fhir_resource: dict
     record_index: int

@@ -79,7 +79,7 @@ class EnvironmentAgent(Agent):
         patient_data : Optional[DefaultDict], optional
             Store patient data like scans or letters, by default None
         patient_interaction_history : Optional[DefaultDict], optional
-            Log of patient interactions, keyed by patient_id, by default None            
+            Log of patient interactions, keyed by patient_id, by default None
         capacity : Optional[List[dict]], optional
             Capacity of environment over time, by default None
         wait_time : Optional[List[dict]], optional
@@ -299,7 +299,7 @@ class AandEEnvironmentAgent(EnvironmentAgent):
         patient_data : Optional[DefaultDict], optional
             Store patient data like scans or letters, by default None
         patient_interaction_history : Optional[DefaultDict], optional
-            Log of patient interactions, keyed by patient_id, by default None            
+            Log of patient interactions, keyed by patient_id, by default None
         capacity : Optional[List[dict]], optional
             Capacity of environment over time, by default None
         wait_time : Optional[List[dict]], optional
@@ -387,7 +387,7 @@ class GPEnvironmentAgent(EnvironmentAgent):
         patient_data : Optional[DefaultDict], optional
             Store patient data like scans or letters, by default None
         patient_interaction_history : Optional[DefaultDict], optional
-            Log of patient interactions, keyed by patient_id, by default None            
+            Log of patient interactions, keyed by patient_id, by default None
         capacity : Optional[List[dict]], optional
             Capacity of environment over time, by default None
         wait_time : Optional[List[dict]], optional

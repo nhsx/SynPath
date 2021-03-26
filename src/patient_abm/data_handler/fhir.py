@@ -548,7 +548,7 @@ def convert_patient_record_entry_to_fhir(
 
     if resource_type == "Encounter":
 
-        resource = {            
+        resource = {
             # status: planned | arrived | triaged | in-progress | onleave
             # | finished | cancelled +.
             "status": "finished",  # required
@@ -562,7 +562,7 @@ def convert_patient_record_entry_to_fhir(
 
         set_subject(resource, patient)
 
-        if "code" in _entry: 
+        if "code" in _entry:
             resource["class"]["code"] = _entry["code"]
 
         if _entry.get("end") is not None:

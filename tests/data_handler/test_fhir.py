@@ -178,4 +178,3 @@ def test_convert_patient_record_entry_to_fhir():
     bundle = fhir_handler.load(
         bundle_path, "Bundle", server_url=None, validate=True
     )
-

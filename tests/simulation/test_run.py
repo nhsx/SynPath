@@ -44,7 +44,7 @@ def test_simulate():
                 / f"{simulation_id_prefix}_{patient['patient_id']}"
                 / f"{log_name}.log"
             )
-            
+
             # TODO: python 3.7 test fails for some reason if use
             # next line
             # log_file.unlink(missing_ok=True)
