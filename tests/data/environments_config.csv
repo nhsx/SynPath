@@ -1,0 +1,3 @@
+environment_id,name,interactions,type
+0,gp,"['gp.measure_bmi', 'gp.diagnose_fever', 'general.outpatient_encounter']",gp
+1,a_and_e,"['general.inpatient_encounter', 'general.outpatient_encounter']",a_and_e

@@ -1,0 +1,51 @@
+{
+    "patients": [
+        {
+            "patient_id": 0,
+            "gender": "male",
+            "birth_date": "1988-07-04",
+            "patient__name": "Peter"
+        },
+        {
+            "patient_id": 1,
+            "gender": "female",
+            "birth_date": "1992-05-24",
+            "name": "Lois"
+        }
+    ],
+    "environments": [
+        {
+            "environment_id": 0,
+            "name": "gp",
+            "interactions": [
+                "gp.measure_bmi",
+                "gp.diagnose_fever",
+                "general.outpatient_encounter"
+            ],
+            "type": "gp"
+        },
+        {
+            "environment_id": 1,
+            "name": "a_and_e",
+            "interactions": [
+                "general.inpatient_encounter",
+                "general.outpatient_encounter"
+            ],
+            "type": "a_and_e"
+        }
+    ],
+    "intelligence_dir": "template/example/intelligence",
+    "save_dir": "template/example/outputs",
+    "initial_environment_ids": {
+        "from_id": 0
+    },
+    "stopping_condition": {
+        "max_patient_time": {"days": 30}
+    },
+    "hard_stop": 1000,
+    "log_every": 1,
+    "log_intermediate": false,
+    "log_patient_record": true,
+    "fhir_server_validate": false,
+    "patient_record_duplicate_action": "add"
+}

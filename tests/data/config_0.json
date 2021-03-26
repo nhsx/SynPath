@@ -1,0 +1,52 @@
+{
+    "patients": [
+        {
+            "patient_id": 0,
+            "gender": "male",
+            "birth_date": "1988-07-04",
+            "name": "Peter Griffin"
+        },
+        {
+            "patient_id": 1,
+            "gender": "female",
+            "birth_date": "1992-05-24",
+            "name": "Lois Griffin"
+        }
+    ],
+    "environments": [
+        {
+            "environment_id": 0,
+            "name": "gp",
+            "interactions": [
+                "gp.measure_bmi",
+                "gp.diagnose_fever",
+                "general.encounter"
+            ],
+            "type": "gp"
+        },
+        {
+            "environment_id": 1,
+            "name": "a_and_e",
+            "interactions": [
+                "general.encounter"
+            ],
+            "type": "a_and_e"
+        }
+    ],
+    "intelligence_dir": "/test/path/to/intelligence",
+    "initial_environment_ids": {
+        "from_id": 0
+    },
+    "stopping_condition": {
+        "max_patient_time": {
+            "days": 90
+        }
+    },
+    "log_every": 1,
+    "hard_stop": 100,
+    "log_patient_record": true,
+    "save_dir": "/test/path/to/save_dir",
+    "log_intermediate": false,
+    "fhir_server_validate": false,
+    "patient_record_duplicate_action": "skip"
+}

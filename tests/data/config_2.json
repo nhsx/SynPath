@@ -1,0 +1,20 @@
+{
+    "patients": "tests/data/patients_config.csv",
+    "environments": "tests/data/environments_config.csv",
+    "intelligence_dir": "/test/path/to/intelligence",
+    "initial_environment_ids": {
+        "from_id": 0
+    },
+    "stopping_condition": {
+        "max_patient_time": {
+            "days": 90
+        }
+    },
+    "log_every": 1,
+    "hard_stop": 100,
+    "log_patient_record": true,
+    "save_dir": "/test/path/to/save_dir",
+    "log_intermediate": false,
+    "fhir_server_validate": false,
+    "patient_record_duplicate_action": "skip"    
+}

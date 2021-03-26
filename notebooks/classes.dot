@@ -1,0 +1,8 @@
+digraph "classes" {
+charset="utf-8"
+rankdir=BT
+"0" [label="{PatientAgent|actions_custom_fields : list\lalive : bool\lbirth_date : datetime\lconditions_custom_fields : list\lfhir_handler : FHIRHandler\lgender\linpatient : NoneType\lkwargs : dict\lmedications_custom_fields : list\lname : NoneType\lpatient_id\lpatient_profile\lrecord : list\lserialisable_attributes : list\lstart_time : datetime, NoneType\l|from_fhir(cls, fhir_path, resource_type, patient_id, start_time, server_url)\linitialize_dataframe_attributes(attrs_name, record, attrs_input, additional_core_fields, fhir_resource_types, custom_fields)\llog_state(logger, log_last_n_record_entries, print_only)\lsort_record(by)\lupdate(record, skip_existing, logger, print_)\lupdate_dataframe_attributes(attrs_name, record, df)\lupdate_record(record, skip_existing, logger, print_)\lvalidate_entry(entry, skip_existing, logger, print_)\l}", shape="record"];
+"1" [label="{PatientRecordEntry|\l|}", shape="record"];
+"1" -> "0" [arrowhead="diamond", arrowtail="none", fontcolor="green", label="patient_profile", style="solid"];
+"1" -> "0" [arrowhead="diamond", arrowtail="none", fontcolor="green", label="patient_profile", style="solid"];
+}

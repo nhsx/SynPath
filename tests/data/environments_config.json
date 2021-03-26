@@ -1,0 +1,21 @@
+[
+    {
+        "environment_id": 0,
+        "name": "gp",
+        "interactions": [
+            "gp.measure_bmi",
+            "gp.diagnose_fever",
+            "general.outpatient_encounter"
+        ],
+        "type": "gp"
+    },
+    {
+        "environment_id": 1,
+        "name": "a_and_e",
+        "interactions": [
+            "general.inpatient_encounter",
+            "general.outpatient_encounter"
+        ],
+        "type": "a_and_e"
+    }
+]

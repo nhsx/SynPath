@@ -1,0 +1,14 @@
+[
+    {
+        "patient_id": 0,
+        "gender": "male",
+        "birth_date": "1988-07-04",
+        "name": "Peter"
+    },
+    {
+        "patient_id": 1,
+        "gender": "female",
+        "birth_date": "1992-05-24",
+        "name": "Lois"
+    }
+]

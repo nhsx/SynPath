@@ -1,0 +1,14 @@
+{
+    "patients": "Union[List[dict], str]",
+    "environments": "Union[List[dict], str]",
+    "intelligence_dir": "str",
+    "save_dir": "str",
+    "initial_environment_ids": "dict",
+    "stopping_condition": "dict",
+    "hard_stop": "int",
+    "log_every": "int",
+    "log_intermediate": "bool",
+    "log_patient_record": "bool",
+    "fhir_server_validate": "bool",
+    "patient_record_duplicate_action": "str"
+}

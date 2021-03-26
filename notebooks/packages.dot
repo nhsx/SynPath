@@ -1,0 +1,10 @@
+digraph "packages" {
+charset="utf-8"
+rankdir=BT
+"0" [label="patient_abm.agent", shape="box"];
+"1" [label="patient_abm.agent.base", shape="box"];
+"2" [label="patient_abm.agent.environment", shape="box"];
+"3" [label="patient_abm.agent.patient", shape="box"];
+"2" -> "1" [arrowhead="open", arrowtail="none"];
+"3" -> "1" [arrowhead="open", arrowtail="none"];
+}
