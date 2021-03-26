@@ -565,7 +565,7 @@ def convert_patient_record_entry_to_fhir(
         if "code" in _entry:
             resource["class"]["code"] = _entry["code"]
 
-        if _entry.get("end") is not None:
+        if "end" in _entry:
             resource["period"]["end"] = datetime_to_string(_entry["end"])
 
     elif resource_type == "Condition":
@@ -577,7 +577,7 @@ def convert_patient_record_entry_to_fhir(
 
         set_subject(resource, patient)
 
-        if _entry.get("end") is not None:
+        if "end" in _entry:
             resource["abatementDateTime"] = datetime_to_string(_entry["end"])
             resource["clinicalStatus"] = {
                 "coding": [
@@ -604,7 +604,7 @@ def convert_patient_record_entry_to_fhir(
 
         set_subject(resource, patient)
 
-        if _entry.get("end") is not None:
+        if "end" in _entry:
             resource["effectivePeriod"]["end"] = datetime_to_string(
                 _entry["end"]
             )
@@ -631,7 +631,7 @@ def convert_patient_record_entry_to_fhir(
 
         set_subject(resource, patient)
 
-        if _entry.get("end") is not None:
+        if "end" in _entry:
             resource["performedPeriod"]["end"] = datetime_to_string(
                 _entry["end"]
             )
@@ -722,7 +722,7 @@ def convert_patient_record_entry_to_fhir(
                 patient.birth_date, format_str="%Y-%m-%d"
             ),
         }
-        if _entry.get("end") is not None:
+        if "end" in _entry:
             resource["deceasedDateTime"] = datetime_to_string(_entry["end"])
     else:
         raise ValueError(
