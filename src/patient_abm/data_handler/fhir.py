@@ -421,6 +421,7 @@ def get_fhir_to_patient_record_entry_map():
 def get_supported_fhir_resources():
     return set(get_fhir_to_patient_record_entry_map())
 
+
 def get_required_entry_fields():
     return {"name", "start", "resource_type"}
 

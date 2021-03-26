@@ -118,10 +118,11 @@ class PatientRecordEntry:
     record_index : int
         The index in the record list corresponding to this entry
     entry_id : str
-        A unique ID for the entry   
+        A unique ID for the entry
     tag : Optional[str], optional
         A human-readable name for the the entry, by default None
-    """    
+    """
+
     entry: dict
     real_time: Union[str, datetime.datetime]
     patient_time: Union[str, datetime.datetime]
@@ -132,7 +133,7 @@ class PatientRecordEntry:
     fhir_resource_type: str
     fhir_resource: dict
     record_index: int
-    entry_id: str    
+    entry_id: str
     tag: Optional[str]
 
 
