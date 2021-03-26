@@ -33,7 +33,7 @@ def wrap_fhir_resource(
     tag: Optional[str] = None,
     raw_fhir_resource: Optional[dict] = None,
 ) -> dict:
-    """Wraps a minimal record 'entry' into a dictioary that
+    """Wraps a minimal record 'entry' into a dictionary that
     can be used in the PatientRecordEntry constructor.
 
     Parameters
@@ -82,6 +82,47 @@ def wrap_fhir_resource(
 
 @dataclass
 class PatientRecordEntry:
+    """The patient record 'entry' object. Forms an element of the PatientAgent
+    record attribute.
+
+    Parameters
+    ----------
+    entry : dict
+        The actual content of the PatientRecordEntry. A FHIR-style resource
+        written in the internal patient record representation.
+        Must at least have "name", "start" and "resource_type"
+        keys. Please refer to the notebook 'patient-agent.ipynb' in the
+        notebooks folder for an example.
+    real_time : datetime.datetime
+        The real timestamp attached to the entry
+    patient_time : datetime.datetime
+        The timestamp in patient-time attached to the entry
+    environment_id : Optional[Union[str, int]], optional
+        If the entry was the result of interacting with an environment, this
+        is the environment_id, by default None
+    interactions : Optional[List[str]], optional
+        If the entry was the result of interacting with an environment, this
+        is the list of interactions that were used in that process,
+        by default None
+    simulation_step : Optional[int], optional
+        If this entry was generated in a simulation, this is the simulation
+        step that produced the entry (useful if, say, a simulation step
+        generated multiple entries), by default None
+    fhir_resource_time: Optional[Union[str, datetime.datetime]]
+        The time of the entry (to be deprecated).
+    fhir_resource_type: str
+        The FHIR resource type of the entry
+    fhir_resource : Optional[dict], optional
+        Additional raw FHIR data that can be added to the entry when
+        converting to FHIR, by default None
+    record_index : int
+        The index in the record list corresponding to this entry
+    entry_id : str
+        A unique ID for the entry   
+    tag : Optional[str], optional
+        A human-readable name for the the entry, by default None
+    """    
+    entry: dict
     real_time: Union[str, datetime.datetime]
     patient_time: Union[str, datetime.datetime]
     environment_id: Optional[Union[str, int]]
@@ -91,8 +132,7 @@ class PatientRecordEntry:
     fhir_resource_type: str
     fhir_resource: dict
     record_index: int
-    entry_id: str
-    entry: dict
+    entry_id: str    
     tag: Optional[str]
 
 
