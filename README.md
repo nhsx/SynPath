@@ -352,8 +352,8 @@ In this notebook we introduce the patient agent and its methods including:
   - initializing with comorbidities
   - adding properties to conditions, such as severity
   - updating the patient record
-  - the patient record internal reprsentation and converting to FHIR
+  - the patient record internal representation and converting to FHIR
 
 ### `simulation.ipynb`
 
-In this notebook we walk through how to run a simulation with a very simple intelligence layer and interactions. Please see above for more information about the simulation configuration script and the intelligence layer (we will not go into detail about the intelligence layer in the notebook). Here we will be using the files in template/example, and going through main processes that are called when patient_abm.simulation.run.simulate is exexcuted (which is the function called by the CLI command patient_abm simulation run
+In this notebook we walk through how to run a simulation with a very simple intelligence layer and interactions. Please see above for more information about the simulation configuration script and the intelligence layer (we will not go into detail about the intelligence layer in the notebook). Here we will be using the files in template/example, and going through main processes that are called when patient_abm.simulation.run.simulate is executed (which is the function called by the CLI command `patient_abm simulation run`)
