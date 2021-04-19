@@ -42,8 +42,11 @@ def _initialize_environments_from_attributes(
 
         if "type" in attribute:
             type_ = attribute["type"]
-            attribute["environment_type"] = type_
             del attribute["type"]
+        else:
+            type_ = ""
+
+        attribute["environment_type"] = type_
 
         if type_ == "a_and_e":
             environment = AandEEnvironmentAgent(**attribute)

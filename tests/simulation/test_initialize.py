@@ -48,6 +48,9 @@ def test_initialize_environments_from_attributes():
     config = {
         "environments": [
             {
+                "environment_id": "minimal",
+            },
+            {
                 "environment_id": "00",
                 "type": "clinic",
                 "name": "my_local_clinic",
@@ -77,8 +80,10 @@ def test_initialize_environments_from_attributes():
         assert (
             environment.environment_id == environment_config["environment_id"]
         )
-        assert environment.environment_type == environment_config["type"]
-        assert environment.name == environment_config["name"]
+        assert environment.environment_type == environment_config.get(
+            "type", ""
+        )
+        assert environment.name == environment_config.get("name", "")
 
 
 def test_initialize_initial_environment_ids():
