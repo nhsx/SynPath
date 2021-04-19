@@ -149,6 +149,14 @@ agent objects. You can enter its value in one of two ways:
   in the case where the Patient attribute is a nested object (such as the
   Patient's `conditions` attribute.)
 
+Note that each patient must have the following required attributes:
+  - patient_id : Union[str, int]: Unique ID for the patient.
+  - gender : str: Patient gender, either "male" or "female".
+There are many other optional attributes, see the documentation for
+the `PatientAgent` class in `patient_abm.agent.patient`.
+
+Two patient can have the same `patient_id`.
+
 Even though multiple patients can be listed here, the simulation only
 runs for one patient at a time, they do not interact.
 
@@ -165,7 +173,12 @@ Environment objects. You can enter its value in one of two ways:
   in the case where the Environment attribute is a nested object (such as the
   Environment `interactions` attribute.)
 
-Each environment must have a unique `environment_id`.
+Note that each environment must have the following required attribute:
+  - environment_id : Union[str, int]: Unique ID for the environment.
+There are many other optional attributes, see the documentation for
+the `EnvironmentAgent` class in `patient_abm.agent.environment`.
+
+Each environment in the list must have a unique `environment_id`.
 
 Each environment's
 `interactions` attribute is a list of strings referring to functions in the
