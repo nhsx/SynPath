@@ -59,6 +59,8 @@ cover/*
 # Output data
 outputs
 template/example/outputs
+tests/data/test_run_outputs
+tests/data/patient_patient-0_bundle.json
 
 # Development area
 my_dev
