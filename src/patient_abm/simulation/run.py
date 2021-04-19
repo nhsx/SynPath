@@ -38,6 +38,9 @@ def _create_simulation_log_msg(
     **kwargs,
 ) -> None:
 
+    # NOTE: next_environment_id_to_prob and next_environment_to_time can
+    # also be written in the logs - simply uncomment below
+
     return {
         "simulation_id": simulation_id,
         "simulation_status": status,
@@ -51,6 +54,8 @@ def _create_simulation_log_msg(
         "patient_time_elapsed": patient_time - patient.start_time,
         "environment_id": environment.environment_id,
         "next_environment_id": next_environment_id,
+        # "next_environment_id_to_prob": next_environment_id_to_prob,
+        # "next_environment_id_to_time": next_environment_id_to_time,
         "number_of_patient_record_entries": len(patient.record),
         **kwargs,
     }
@@ -256,6 +261,13 @@ def run_patient_simulation(
         if step >= hard_stop:
             break
 
+        # NOTE: Currently next_environment_id_to_prob and
+        # next_environment_id_to_time are not being used or saved.
+        # They could be printed in the logs, see _create_simulation_log_msg
+        # but are currently commented out. They are present here in case
+        # the user wants to save this information in order to track
+        # simulation variables in detail.
+
         (
             patient,
             environment,
@@ -263,8 +275,8 @@ def run_patient_simulation(
             update_data,
             next_environment_id,
             interaction_names,
-            next_environment_id_to_prob,  # TODO; currently not saved
-            next_environment_id_to_time,  # TODO; currently not saved
+            next_environment_id_to_prob,
+            next_environment_id_to_time,
         ) = intelligence(
             patient, environment, patient_time, interaction_mapper
         )
