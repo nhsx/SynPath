@@ -1,4 +1,5 @@
 import json
+from os.path import commonprefix
 
 import pytest
 
@@ -10,6 +11,7 @@ from patient_abm.agent.patient import (
 )
 from patient_abm.data_handler.fhir import (
     HAPI_FHIR_SERVER_4,
+    PYRO_FHIR_SERVER_4,
     FHIRHandler,
     FHIRValidationError,
     convert_fhir_to_patient_record_entry,
@@ -53,15 +55,25 @@ test_data = [
         "Patient",
         None,
     ),
+    # (
+    #     "Bundle",
+    #     "Bundle",
+    #     HAPI_FHIR_SERVER_4,
+    # ),
+    # (
+    #     "Bundle",
+    #     "Patient",
+    #     HAPI_FHIR_SERVER_4,
+    # ),
     (
         "Bundle",
         "Bundle",
-        HAPI_FHIR_SERVER_4,
+        PYRO_FHIR_SERVER_4,
     ),
     (
         "Bundle",
         "Patient",
-        HAPI_FHIR_SERVER_4,
+        PYRO_FHIR_SERVER_4,
     ),
 ]
 
@@ -71,11 +83,50 @@ test_data = [
 )
 def test_load_resources(input_resource_type, output_resource_type, server_url):
 
+    # NOTE: When running tests on 19/04/2021, the HAPI_FHIR_SERVER_4
+    # at http://hapi.fhir.org/baseR4 no longer
+    # successfully validates the file tests/data/fhir_example_bundle.json
+    # which was generated using the synthea library and previously worked.
+    #  There seems to be an error with the SNOMED codes, the error messages
+    # look like
+    # {
+    #     "severity": "error",
+    #     "code": "processing",
+    #     "diagnostics": (
+    #         "Unknown code {http://snomed.info/sct}116154003 for "
+    #         "'http://snomed.info/sct#116154003'"
+    #     ),
+    #     "location": [
+    #         (
+    #             "Bundle.entry[3].resource.ofType(CareTeam)"
+    #             ".participant[0].role[0].coding[0]"
+    #         ),
+    #         "Line 1, Col 5664",
+    #     ],
+    # }
+    # It is not clear why these errors have started appearing, we recommend
+    # further investigation. For now, we have commented the inputs in
+    # test_data above which use the HAPI_FHIR_SERVER_4.
+
+    # As an alternative, we have tried validation using a different FHIR
+    # server: PYRO_FHIR_SERVER_4 at https://r4.test.pyrohealth.net/fhir.
+    # This validates without a problem, however this server requires a custom
+    # header in the HTTP request (see below). In order to make this useful
+    # going forward, we have enabled the user to pass kwargs to the FHIRHandler
+    # validate method so that custom headers or other arguments can be supplied
+    # where required.
+
+    if server_url == PYRO_FHIR_SERVER_4:
+        validate_kwargs = {"headers": {"Accept": "application/fhir+json"}}
+    else:
+        validate_kwargs = {}
+
     fhirhandler_data = FHIRHandler().load(
         TEST_DATA_DIR / f"fhir_example_{input_resource_type.lower()}.json",
         input_resource_type=input_resource_type,
         output_resource_type=output_resource_type,
         server_url=server_url,
+        **validate_kwargs,
     )
 
     with (
