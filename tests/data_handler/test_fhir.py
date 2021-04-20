@@ -1,5 +1,4 @@
 import json
-from os.path import commonprefix
 
 import pytest
 
