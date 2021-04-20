@@ -9,17 +9,16 @@ from patient_abm.agent.patient import (
     wrap_fhir_resource,
 )
 from patient_abm.data_handler.fhir import (
-    HAPI_FHIR_SERVER_4,
+    # HAPI_FHIR_SERVER_4,
     PYRO_FHIR_SERVER_4,
     FHIRHandler,
     FHIRValidationError,
-    convert_fhir_to_patient_record_entry,
     convert_patient_record_entry_to_fhir,
     generate_patient_fhir_bundle,
     generate_patient_fhir_resources,
     get_supported_fhir_resources,
 )
-from patient_abm.utils import datetime_to_string, string_to_datetime
+from patient_abm.utils import string_to_datetime
 
 TEST_DATA_DIR = PATIENT_ABM_DIR / "tests" / "data"
 
