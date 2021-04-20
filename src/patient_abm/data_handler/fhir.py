@@ -13,6 +13,7 @@ from patient_abm.utils import datetime_to_string
 
 # NOTE: we recommend implementing a custom FHIR validation server
 HAPI_FHIR_SERVER_4 = "http://hapi.fhir.org/baseR4"
+PYRO_FHIR_SERVER_4 = "https://r4.test.pyrohealth.net/fhir"
 
 
 class FHIRValidationError(Exception):
@@ -49,6 +50,7 @@ class FHIRHandler(DataHandler):
         data: dict,
         resource_type: str = None,
         server_url: Optional[str] = None,
+        **kwargs,
     ) -> bool:
         """Validate FHIR data. If `server_url` is not None, it will attempt to
         validate using operation at '{server_url}/{resource_type}/$validate'.
@@ -66,6 +68,10 @@ class FHIRHandler(DataHandler):
             by default None
         server_url : Optional[str], optional
             For online validation, a server URL, by default None
+        kwargs: dict
+            Keyword arguments for the online validation method - gets
+            passed to the python requests.post function. For example,
+            if want to pass custom headers with the request.
 
         Returns
         -------
@@ -84,7 +90,7 @@ class FHIRHandler(DataHandler):
         if server_url is not None:
 
             url = f"{server_url}/{resource_type}/$validate"
-            r = requests.post(url, json=data)
+            r = requests.post(url, json=data, **kwargs)
 
             if r.status_code == 200:
                 return True
@@ -121,6 +127,7 @@ class FHIRHandler(DataHandler):
         xml_schema_dir: Optional[Union[Path, str]] = None,
         server_url: str = HAPI_FHIR_SERVER_4,
         validate: bool = True,
+        **kwargs,
     ) -> Union[list, dict]:
         """Load and validate FHIR data with specific input_resource_type.
         If output_resource_type is different to input_resource_type, then
@@ -144,6 +151,10 @@ class FHIRHandler(DataHandler):
             which is http://hapi.fhir.org/baseR4
         validate : bool, optional
             Whether to validate the input, by default True
+        kwargs: dict
+            Keyword arguments for the online validation method - gets
+            passed to the python requests.post function. For example,
+            if want to pass custom headers with the request.
 
         Returns
         -------
@@ -201,7 +212,7 @@ class FHIRHandler(DataHandler):
             )
 
         if validate:
-            self.validate(data, input_resource_type, server_url)
+            self.validate(data, input_resource_type, server_url, **kwargs)
 
         if (output_resource_type is None) or (
             output_resource_type == input_resource_type
@@ -234,6 +245,7 @@ class FHIRHandler(DataHandler):
         resource_type: str = None,
         validate: bool = True,
         server_url: str = HAPI_FHIR_SERVER_4,
+        **kwargs,
     ) -> None:
         """Validate and save FHIR data as JSON file
 
@@ -251,11 +263,15 @@ class FHIRHandler(DataHandler):
             Whether to validate data before saving, by default True
         server_url : Optional[str], optional
             For online validation, a server URL, by default HAPI_FHIR_SERVER_4
+        kwargs: dict
+            Keyword arguments for the online validation method - gets
+            passed to the python requests.post function. For example,
+            if want to pass custom headers with the request.
         """
 
         # TODO: add XML to save?
         if validate:
-            self.validate(data, resource_type, server_url)
+            self.validate(data, resource_type, server_url, **kwargs)
 
         self.save_json(path, data)
 
@@ -747,6 +763,7 @@ def generate_patient_fhir_resources(
     environments: "Dict[Union[str, int], EnvironmentAgent]" = None,  # noqa
     validate: bool = True,
     server_url: Optional[str] = None,
+    **kwargs,
 ):
     """Generate list of FHIR resources from patient record
 
@@ -766,6 +783,10 @@ def generate_patient_fhir_resources(
     server_url : Optional[str], optional
         URL for server to validate each resource, by default None, in which
         case only offline validation is performed
+    kwargs: dict
+        Keyword arguments for the online validation method - gets
+        passed to the python requests.post function. For example,
+        if want to pass custom headers with the request.
 
     Returns
     -------
@@ -783,7 +804,9 @@ def generate_patient_fhir_resources(
         resources.append(resource)
 
     for resource in resources:
-        FHIRHandler().validate(resource, resource["resourceType"], server_url)
+        FHIRHandler().validate(
+            resource, resource["resourceType"], server_url, **kwargs
+        )
 
     return resources
 
@@ -795,6 +818,7 @@ def generate_patient_fhir_bundle(
     validate: bool = True,
     server_url: Optional[str] = None,
     save_path: Optional[Union[str, Path]] = None,
+    **kwargs,
 ):
     """Generate FHIR bundle from patient record
 
@@ -814,6 +838,10 @@ def generate_patient_fhir_bundle(
         case only offline validation is performed
     save_path : Optional[Union[str, Path]], optional
         JSON path if want to save bundle, by default None
+    kwargs: dict
+        Keyword arguments for the online validation method - gets
+        passed to the python requests.post function. For example,
+        if want to pass custom headers with the request.
 
     Returns
     -------
@@ -833,17 +861,14 @@ def generate_patient_fhir_bundle(
 
     if save_path is not None:
         FHIRHandler().save(
-            save_path,
-            bundle,
-            "Bundle",
-            validate,
-            server_url,
+            save_path, bundle, "Bundle", validate, server_url, **kwargs
         )
     elif validate:
         FHIRHandler().validate(
             bundle,
             "Bundle",
             server_url,
+            **kwargs,
         )
 
     return bundle

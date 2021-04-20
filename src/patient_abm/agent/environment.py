@@ -59,7 +59,8 @@ class EnvironmentAgent(Agent):
         environment_id : Union[str, int]
             Unique ID for the environment.
         environment_type : str, optional
-            String defining environment type, e.g. "surgery", by default ""
+            String defining environment type, e.g. "surgery", by default "".
+            Note this is called "type" in the config.json
         name : str, optional
             Name for the environment, by default ""
         patient_present : bool, optional
@@ -279,7 +280,8 @@ class AandEEnvironmentAgent(EnvironmentAgent):
         environment_id : Union[str, int]
             Unique ID for the environment.
         environment_type : str, optional
-            String defining environment type, by default "a_and_e"
+            String defining environment type, by default "a_and_e".
+            Note this is called "type" in the config.json
         name : str, optional
             Name for the environment, by default "a_and_e"
         patient_present : bool, optional
@@ -367,7 +369,8 @@ class GPEnvironmentAgent(EnvironmentAgent):
         environment_id : Union[str, int]
             Unique ID for the environment.
         environment_type : str, optional
-            String defining environment type, by default "gp"
+            String defining environment type, by default "gp".
+            Note this is called "type" in the config.json
         name : str, optional
             Name for the environment, by default "gp"
         patient_present : bool, optional

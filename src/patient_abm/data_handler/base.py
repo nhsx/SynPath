@@ -75,7 +75,7 @@ class DataHandler:
         Load CSV data
         """
         with path.open("rb") as f:
-            data = pickle.load(f)
+            data = pickle.load(f, **kwargs)
         return data
 
     @convert_path
@@ -90,9 +90,9 @@ class DataHandler:
         elif path.suffix == ".txt":
             return self.load_text(path)
         elif path.suffix == ".csv":
-            return self.load_csv(path)
+            return self.load_csv(path, **kwargs)
         elif path.suffix in [".pkl", ".pickle"]:
-            return self.load_pickle(path)
+            return self.load_pickle(path, **kwargs)
 
     @convert_path
     @make_dir
@@ -131,7 +131,7 @@ class DataHandler:
         Save pickle data
         """
         with path.open("wb") as f:
-            pickle.dump(data, f)
+            pickle.dump(data, f, **kwargs)
 
     @convert_path
     @make_dir
@@ -145,12 +145,10 @@ class DataHandler:
         Save JSON, text, CSV, or pickle data
         """
         if path.suffix == ".json":
-            return self.save_json(path, **kwargs)
+            return self.save_json(path, data, **kwargs)
         elif path.suffix == ".txt":
-            return self.save_text(path)
+            return self.save_text(path, data)
         elif path.suffix == ".csv":
-            return self.save_csv(path)
-        elif path.suffix == ".csv":
-            return self.save_csv(path)
+            return self.save_csv(path, data, **kwargs)
         elif path.suffix in [".pkl", ".pickle"]:
-            return self.save_pickle(path)
+            return self.save_pickle(path, data, **kwargs)
