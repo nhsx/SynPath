@@ -3,6 +3,8 @@
 A library for generating synthetic electronic health records in FHIR v4 format
 using agent-based modeling to simulate patient pathways.
 
+See the redacted final report from the March 2021 project development - "REDACTED_C245 ABM Patient Pathways_Final Report_V3_28042021.cleaned.pdf"
+
 # Description
 
 The simulation models a single patient interacting with environments
