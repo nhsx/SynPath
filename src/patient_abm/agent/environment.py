@@ -333,6 +333,7 @@ class AandEEnvironmentAgent(EnvironmentAgent):
             wait_time=wait_time,
             id_=id_,
             created_at=created_at,
+            **kwargs,
         )
 
 
@@ -422,4 +423,5 @@ class GPEnvironmentAgent(EnvironmentAgent):
             wait_time=wait_time,
             id_=id_,
             created_at=created_at,
+            **kwargs,
         )
