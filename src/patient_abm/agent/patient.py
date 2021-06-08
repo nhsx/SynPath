@@ -429,7 +429,7 @@ class PatientAgent(Agent):
         attrs_input: Union[List[dict], pandas.DataFrame],
         custom_fields: List[str],
         additional_core_fields: List[str],
-        fhir_resource_types: Set[str],        
+        fhir_resource_types: Set[str],
     ):
 
         setattr(
@@ -562,45 +562,54 @@ class PatientAgent(Agent):
 
                 count = len(df[df["name"] == name])
 
-                if len(df) > 0:
+                df_name_start = df[
+                    (df["name"] == name) & (df["start"] == start)
+                ]
 
-                    df_name_start = df[
-                        (df["name"] == name) & (df["start"] == start)
-                    ]
+                if len(df_name_start) >= 1:
 
-                    if len(df_name_start) == 1:
-
-                        df.loc[
-                            df_name_start.index, "end"
-                        ] = string_to_datetime(entry.entry.get("end"))
-
-                        df.loc[df_name_start.index, "real_end_time"] = (
-                            None
-                            if entry.entry.get("end") is None
-                            else string_to_datetime(entry.real_time)
+                    if len(df_name_start) > 1:
+                        print(
+                            "WARNING: there is more than one row "
+                            f"in the patient {attrs_name} table "
+                            f"with name = {name} and start_date = {start_date}. "
+                            "Removing duplicate rows."
                         )
+                        df = df.reset_index(drop=True)
+                        df_name_start_inds = df[
+                            (df["name"] == name) & (df["start"] == start)
+                        ].index
+                        df = df.drop(index=df_name_start_inds[:-1])
 
-                        df.loc[df_name_start.index, "active"] = (
-                            entry.entry.get("end") is None
-                        )
+                    df.loc[df_name_start.index, "end"] = string_to_datetime(
+                        entry.entry.get("end")
+                    )
 
-                        for col in df.columns:
-                            if col in [
-                                "name",
-                                "start",
-                                "end",
-                                "real_end_time",
-                                "real_start_time",
-                                "active",
-                                "record_index",
-                                "count",
-                            ]:
-                                continue
-                            df.loc[df_name_start.index, col] = entry.entry.get(
-                                col
-                            )
+                    df.loc[df_name_start.index, "real_end_time"] = (
+                        None
+                        if entry.entry.get("end") is None
+                        else string_to_datetime(entry.real_time)
+                    )
 
-                else:
+                    df.loc[df_name_start.index, "active"] = (
+                        entry.entry.get("end") is None
+                    )
+
+                    for col in df.columns:
+                        if col in [
+                            "name",
+                            "start",
+                            "end",
+                            "real_end_time",
+                            "real_start_time",
+                            "active",
+                            "record_index",
+                            "count",
+                        ]:
+                            continue
+                        df.loc[df_name_start.index, col] = entry.entry.get(col)
+
+                elif len(df) == 0 or len(df_name_start) == 0:
 
                     new_row = {
                         "name": entry.entry["name"],
@@ -628,6 +637,7 @@ class PatientAgent(Agent):
                     df = pandas.concat(
                         [df, pandas.DataFrame([new_row])]
                     ).reset_index(drop=True)
+
         setattr(self, attrs_name, df)
 
     def _sort_record(self, by: str = "record_index"):
