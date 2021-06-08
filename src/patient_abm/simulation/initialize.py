@@ -91,6 +91,9 @@ def _initialize_agents(
     }
     if not isinstance(config[agents], list):
         attributes = _get_agent_attributes_from_file(config[agents])
+        # NOTE: modify config here because later _initialize_interaction_mapper
+        # accesses config["environments"]
+        config[agents] = attributes
     else:
         attributes = config[agents]
 
@@ -323,8 +326,12 @@ def initialize(
     if isinstance(config, str) or isinstance(config, Path):
         config = parse_config(config)
 
+    # NOTE: order is important - load patients and environments first in case
+    #  their information needs to be loaded from a file - config gets updated
+    # with this info.
     patients = _initialize_patients(config)
     environments = _initialize_environments(config)
+
     interaction_mapper = _initialize_interaction_mapper(config)
     intelligence = _initialize_intelligence(config)
 
