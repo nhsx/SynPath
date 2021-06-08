@@ -326,6 +326,8 @@ def initialize(
     if isinstance(config, str) or isinstance(config, Path):
         config = parse_config(config)
 
+    config = copy.deepcopy(config)
+
     # NOTE: order is important - load patients and environments first in case
     #  their information needs to be loaded from a file - config gets updated
     # with this info.
