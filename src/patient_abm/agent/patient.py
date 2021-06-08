@@ -572,7 +572,8 @@ class PatientAgent(Agent):
                         print(
                             "WARNING: there is more than one row "
                             f"in the patient {attrs_name} table "
-                            f"with name = {name} and start_date = {start_date}. "
+                            f"with name = {name} and "
+                            f"start_date = {start}. "
                             "Removing duplicate rows."
                         )
                         df = df.reset_index(drop=True)
