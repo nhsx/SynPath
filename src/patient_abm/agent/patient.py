@@ -427,9 +427,9 @@ class PatientAgent(Agent):
         attrs_name: str,
         record: List[PatientRecordEntry],
         attrs_input: Union[List[dict], pandas.DataFrame],
-        additional_core_fields: List[str],
-        fhir_resource_types: Set[str],
         custom_fields: List[str],
+        additional_core_fields: List[str],
+        fhir_resource_types: Set[str],        
     ):
 
         setattr(
@@ -463,7 +463,7 @@ class PatientAgent(Agent):
             )
 
         df = getattr(self, attrs_name)
-        for col in custom_fields:
+        for col in custom_fields + additional_core_fields:
             if col not in df.columns:
                 df[col] = None
 
