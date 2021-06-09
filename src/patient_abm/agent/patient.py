@@ -553,6 +553,7 @@ class PatientAgent(Agent):
     ):
 
         for entry in record:
+
             if entry.fhir_resource_type in getattr(
                 self, f"{attrs_name}_fhir_resource_types"
             ):
@@ -569,6 +570,8 @@ class PatientAgent(Agent):
                 if len(df_name_start) >= 1:
 
                     if len(df_name_start) > 1:
+                        # TODO: suggest handling this in a better
+                        # way in future, it is a little crude at the moment
                         print(
                             "WARNING: there is more than one row "
                             f"in the patient {attrs_name} table "
@@ -581,6 +584,10 @@ class PatientAgent(Agent):
                             (df["name"] == name) & (df["start"] == start)
                         ].index
                         df = df.drop(index=df_name_start_inds[:-1])
+                        df = df.reset_index(drop=True)
+                        df_name_start = df[
+                            (df["name"] == name) & (df["start"] == start)
+                        ]
 
                     df.loc[df_name_start.index, "end"] = string_to_datetime(
                         entry.entry.get("end")
@@ -614,7 +621,7 @@ class PatientAgent(Agent):
 
                     new_row = {
                         "name": entry.entry["name"],
-                        "start": string_to_datetime(entry.patient_time),
+                        "start": string_to_datetime(entry.entry["start"]),
                         "real_start_time": string_to_datetime(entry.real_time),
                         "end": string_to_datetime(entry.entry.get("end")),
                         "real_end_time": (

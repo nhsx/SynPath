@@ -4,7 +4,7 @@
             "patient_id": 0,
             "gender": "male",
             "birth_date": "1988-07-04",
-            "patient__name": "Peter"
+            "name": "Peter"
         },
         {
             "patient_id": 1,
@@ -40,7 +40,9 @@
         "from_id": 0
     },
     "stopping_condition": {
-        "max_patient_time": {"days": 30}
+        "max_patient_time": {
+            "days": 30
+        }
     },
     "hard_stop": 1000,
     "log_every": 1,

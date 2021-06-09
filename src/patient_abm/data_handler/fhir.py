@@ -12,6 +12,9 @@ from patient_abm.data_handler.base import DataHandler
 from patient_abm.utils import datetime_to_string
 
 # NOTE: we recommend implementing a custom FHIR validation server
+# The reason that there are two servers is because mid-way the HAPI FHIR
+# server stopped working - see the comment in the
+# tests/data_handler/test_fhir.py test_load_resources function
 HAPI_FHIR_SERVER_4 = "http://hapi.fhir.org/baseR4"
 PYRO_FHIR_SERVER_4 = "https://r4.test.pyrohealth.net/fhir"
 
