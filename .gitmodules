@@ -1,3 +1,3 @@
 [submodule "template/t2dm"]
 	path = template/t2dm
-	url = https://github.com/nhsx/SynPath_Diabetes
+	url = https://github.com/nhsx/SynPath_Diabetes/tree/main/t2dm
