@@ -364,6 +364,8 @@ In this notebook we introduce the patient agent and its methods including:
 
 In this notebook we walk through how to run a simulation with a very simple intelligence layer and interactions. Please see above for more information about the simulation configuration script and the intelligence layer (we will not go into detail about the intelligence layer in the notebook). Here we will be using the files in template/example, and going through main processes that are called when `patient_abm.simulation.run.simulate` is executed (which is the function called by the CLI command `patient_abm simulation run`)
 
+# Usage
+
 ### Roadmap
 
 See the [open issues](https://github.com/nhsx/SynthVAE/issues) for a list of proposed features (and known issues).
