@@ -368,7 +368,7 @@ In this notebook we walk through how to run a simulation with a very simple inte
 
 ### Roadmap
 
-See the [open issues](https://github.com/nhsx/SynthVAE/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/nhsx/SynPath/issues) for a list of proposed features (and known issues).
 
 ### Contributing
 
