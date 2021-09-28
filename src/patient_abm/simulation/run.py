@@ -8,6 +8,9 @@ from patient_abm.agent.environment import (
     AandEEnvironmentAgent,
     EnvironmentAgent,
     GPEnvironmentAgent,
+    COEnvironmentAgent, 
+    OPEnvironmentAgent, 
+    IPEnvironmentAgent,
 )
 from patient_abm.agent.patient import PatientAgent, wrap_fhir_resource
 from patient_abm.data_handler.fhir import (
@@ -64,7 +67,7 @@ def _create_simulation_log_msg(
 def _update_patient_and_environment(
     patient: PatientAgent,
     environment: Union[
-        AandEEnvironmentAgent, EnvironmentAgent, GPEnvironmentAgent
+        AandEEnvironmentAgent, EnvironmentAgent, GPEnvironmentAgent, COEnvironmentAgent, OPEnvironmentAgent, IPEnvironmentAgent
     ],
     interactions: List[str],
     simulation_step: int,
@@ -117,7 +120,7 @@ def run_patient_simulation(
     patient: PatientAgent,
     environments: Dict[
         Union[str, int],
-        Union[AandEEnvironmentAgent, EnvironmentAgent, GPEnvironmentAgent],
+        Union[AandEEnvironmentAgent, EnvironmentAgent, GPEnvironmentAgent, COEnvironmentAgent, OPEnvironmentAgent, IPEnvironmentAgent],
     ],
     interaction_mapper: Dict[str, Callable],
     intelligence: Callable,
@@ -132,7 +135,7 @@ def run_patient_simulation(
     fhir_server_url: Optional[str] = None,
 ) -> Tuple[
     PatientAgent,
-    List[Union[AandEEnvironmentAgent, EnvironmentAgent, GPEnvironmentAgent]],
+    List[Union[AandEEnvironmentAgent, EnvironmentAgent, GPEnvironmentAgent, COEnvironmentAgent, OPEnvironmentAgent, IPEnvironmentAgent]],
 ]:
     """Run a simulation for a single patient. Runs in a while loop. Applies
     intelligence layer at every step of the loop, updates patients and
@@ -154,7 +157,7 @@ def run_patient_simulation(
         Patient to simulation
     environments : Dict[
         Union[str, int],
-        Union[AandEEnvironmentAgent, EnvironmentAgent, GPEnvironmentAgent],
+        Union[AandEEnvironmentAgent, EnvironmentAgent, GPEnvironmentAgent, COEnvironmentAgent, OPEnvironmentAgent, IPEnvironmentAgent],
     ]
         Environments in simulation
     interaction_mapper : Dict[str, Callable]
@@ -191,7 +194,7 @@ def run_patient_simulation(
     Tuple[
         PatientAgent,
         List[Union[
-            AandEEnvironmentAgent, EnvironmentAgent, GPEnvironmentAgent
+            AandEEnvironmentAgent, EnvironmentAgent, GPEnvironmentAgent, COEnvironmentAgent, OPEnvironmentAgent, IPEnvironmentAgent
             ]
         ], ]
         Returns updated patients and environments
