@@ -6,6 +6,9 @@ from patient_abm.agent.environment import (
     AandEEnvironmentAgent,
     EnvironmentAgent,
     GPEnvironmentAgent,
+    COEnvironmentAgent, 
+    OPEnvironmentAgent, 
+    IPEnvironmentAgent,
 )
 from patient_abm.simulation.initialize import (
     _initialize_environments,
@@ -73,6 +76,9 @@ def test_initialize_environments_from_attributes():
     assert isinstance(environments["00"], EnvironmentAgent)
     assert isinstance(environments["01"], GPEnvironmentAgent)
     assert isinstance(environments["02"], AandEEnvironmentAgent)
+    assert isinstance(environments["03"], COEnvironmentAgent)
+    assert isinstance(environments["04"], OPEnvironmentAgent)
+    assert isinstance(environments["05"], IPEnvironmentAgent)
 
     for i, (environment_id, environment) in enumerate(environments.items()):
         environment_config = config["environments"][i]

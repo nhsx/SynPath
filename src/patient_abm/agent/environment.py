@@ -267,8 +267,8 @@ class AandEEnvironmentAgent(EnvironmentAgent):
         interactions: Optional[list] = None,
         patient_data: Optional[DefaultDict] = None,
         patient_interaction_history: Optional[DefaultDict] = None,
-        capacity: Optional[List[dict]] = None,
-        wait_time: Optional[List[dict]] = None,
+        capacity: Optional[List[dict]] = [],
+        wait_time: Optional[List[dict]] = [datetime.timedelta(days=3)],
         id_: Optional[Union[str, int]] = None,
         created_at: Optional[Union[str, datetime.datetime]] = None,
         **kwargs,
@@ -357,57 +357,148 @@ class GPEnvironmentAgent(EnvironmentAgent):
         interactions: Optional[list] = None,
         patient_data: Optional[DefaultDict] = None,
         patient_interaction_history: Optional[DefaultDict] = None,
-        capacity: Optional[List[dict]] = None,
-        wait_time: Optional[List[dict]] = None,
+        capacity: Optional[List[dict]] = [5],
+        wait_time: Optional[List[dict]] = [datetime.timedelta(hours=4)],
         id_: Optional[Union[str, int]] = None,
         created_at: Optional[Union[str, datetime.datetime]] = None,
         **kwargs,
     ):
-        """Initialize AandEEnvironmentAgent agent class
+       
 
-        Parameters
-        ----------
-        environment_id : Union[str, int]
-            Unique ID for the environment.
-        environment_type : str, optional
-            String defining environment type, by default "gp".
-            Note this is called "type" in the config.json
-        name : str, optional
-            Name for the environment, by default "gp"
-        patient_present : bool, optional
-            Whether the patient is physically present when interacting with
-            this environment, by default True
-        location : Optional[dict], optional
-            Location of the environment, by default None
-        organization : Optional[dict], optional
-            Organization of the environment, by default None
-        practitioners : Optional[list], optional
-            List containing one or more practitioners at this environments,
-            by default None
-        interactions : Optional[List[str]], optional
-            List of interaction names that the intelligence layer can
-            apply to the patient when visiting this environment, by default
-            None
-        patient_data : Optional[DefaultDict], optional
-            Store patient data like scans or letters, by default None
-        patient_interaction_history : Optional[DefaultDict], optional
-            Log of patient interactions, keyed by patient_id, by default None
-        capacity : Optional[List[dict]], optional
-            Capacity of environment over time, by default None
-        wait_time : Optional[List[dict]], optional
-            Wait time of the environment over time, by default None
-        id_ : Optional[Union[str, int]], optional
-            Unique ID, by default None. If not supplied, will be
-            automatically set by uuid.uuid4().urn. The actual attribute
-            name will be 'id' not 'id_'.
-        created_at : Optional[Union[str, datetime.datetime]], optional
-            Time agent is created, by default None. If not supplied, will be
-            automatically set by datetime.datetime.now()
-        kwargs : dict
-            Keyword arguments, passed to parent EnvironmentAgent class and
-            set as attributes
-        """
+        super().__init__(
+            environment_id=environment_id,
+            environment_type=environment_type,
+            name=name,
+            patient_present=patient_present,
+            location=location,
+            organization=organization,
+            practitioners=practitioners,
+            interactions=interactions,
+            patient_data=patient_data,
+            patient_interaction_history=patient_interaction_history,
+            capacity=capacity,
+            wait_time=wait_time,
+            id_=id_,
+            created_at=created_at,
+            **kwargs,
+        )
+class COEnvironmentAgent(EnvironmentAgent):
+    """
+    Class for community environment agent.
 
+    NOTE: a placeholder for future development. The current version is
+    almost identical to parent EnvironmentAgent class
+    """
+
+    def __init__(
+        self,
+        environment_id: Union[str, int],
+        environment_type: str = "community",
+        name: str = "community",
+        patient_present: bool = True,
+        location: Optional[dict] = None,
+        organization: Optional[dict] = None,
+        practitioners: Optional[list] = None,
+        interactions: Optional[list] = None,
+        patient_data: Optional[DefaultDict] = None,
+        patient_interaction_history: Optional[DefaultDict] = None,
+        capacity: Optional[List[dict]] = [10],
+        wait_time: Optional[List[dict]] = [datetime.timedelta(weeks=2)],
+        id_: Optional[Union[str, int]] = None,
+        created_at: Optional[Union[str, datetime.datetime]] = None,
+        **kwargs,
+    ):
+
+        super().__init__(
+            environment_id=environment_id,
+            environment_type=environment_type,
+            name=name,
+            patient_present=patient_present,
+            location=location,
+            organization=organization,
+            practitioners=practitioners,
+            interactions=interactions,
+            patient_data=patient_data,
+            patient_interaction_history=patient_interaction_history,
+            capacity=capacity,
+            wait_time=wait_time,
+            id_=id_,
+            created_at=created_at,
+            **kwargs,
+        )
+
+class OPEnvironmentAgent(EnvironmentAgent):
+    """
+    Class for outpatient environment agent.
+
+    NOTE: a placeholder for future development. The current version is
+    almost identical to parent EnvironmentAgent class
+    """
+
+    def __init__(
+        self,
+        environment_id: Union[str, int],
+        environment_type: str = "outpatient",
+        name: str = "outpatient",
+        patient_present: bool = True,
+        location: Optional[dict] = None,
+        organization: Optional[dict] = None,
+        practitioners: Optional[list] = None,
+        interactions: Optional[list] = None,
+        patient_data: Optional[DefaultDict] = None,
+        patient_interaction_history: Optional[DefaultDict] = None,
+        capacity: Optional[List[dict]] = [10],
+        wait_time: Optional[List[dict]] = [datetime.timedelta(weeks=4)],
+        id_: Optional[Union[str, int]] = None,
+        created_at: Optional[Union[str, datetime.datetime]] = None,
+        **kwargs,
+    ):
+
+        super().__init__(
+            environment_id=environment_id,
+            environment_type=environment_type,
+            name=name,
+            patient_present=patient_present,
+            location=location,
+            organization=organization,
+            practitioners=practitioners,
+            interactions=interactions,
+            patient_data=patient_data,
+            patient_interaction_history=patient_interaction_history,
+            capacity=capacity,
+            wait_time=wait_time,
+            id_=id_,
+            created_at=created_at,
+            **kwargs,
+        )
+
+class IPEnvironmentAgent(EnvironmentAgent):
+    """
+    Class for inpatient environment agent.
+
+    NOTE: a placeholder for future development. The current version is
+    almost identical to parent EnvironmentAgent class
+    """
+
+    def __init__(
+        self,
+        environment_id: Union[str, int],
+        environment_type: str = "inpatient",
+        name: str = "inpatient",
+        patient_present: bool = True,
+        location: Optional[dict] = None,
+        organization: Optional[dict] = None,
+        practitioners: Optional[list] = None,
+        interactions: Optional[list] = None,
+        patient_data: Optional[DefaultDict] = None,
+        patient_interaction_history: Optional[DefaultDict] = None,
+        capacity: Optional[List[dict]] = [20],
+        wait_time: Optional[List[dict]] = [datetime.timedelta(days=1)],
+        id_: Optional[Union[str, int]] = None,
+        created_at: Optional[Union[str, datetime.datetime]] = None,
+        **kwargs,
+    ):
+        
         super().__init__(
             environment_id=environment_id,
             environment_type=environment_type,
