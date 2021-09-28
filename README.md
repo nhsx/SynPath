@@ -22,12 +22,16 @@ the patient-environment interactions must be implemented in the `intelligence`
 layer (see the relevant sections below for more details). We have provided
 templates for these elements.
 
+### Project Stucture
+
+- The main code is found in the `src` and `template` folders of the repository (see Usage below for more information)
+- The accompanying [report](./reports/report.pdf) is also available in the `reports` folder
 
 # Installation
 
 ## `pip` installation
 
-This repository has been tested using python 3.7 and 3.8 versions.
+This repository has been tested using [![Python v3.7](https://img.shields.io/badge/python-v3.7-blue.svg)](https://www.python.org/downloads/release/python-370/) and [![Python v3.8](https://img.shields.io/badge/python-v3.8-blue.svg)](https://www.python.org/downloads/release/python-380/)
 
 Use your terminal to `cd` into the directory containing this `README`
 (the project root directory) and run:
@@ -359,3 +363,29 @@ In this notebook we introduce the patient agent and its methods including:
 ### `simulation.ipynb`
 
 In this notebook we walk through how to run a simulation with a very simple intelligence layer and interactions. Please see above for more information about the simulation configuration script and the intelligence layer (we will not go into detail about the intelligence layer in the notebook). Here we will be using the files in template/example, and going through main processes that are called when `patient_abm.simulation.run.simulate` is executed (which is the function called by the CLI command `patient_abm simulation run`)
+
+### Roadmap
+
+See the [open issues](https://github.com/nhsx/SynthVAE/issues) for a list of proposed features (and known issues).
+
+### Contributing
+
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+_See [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidance._
+
+### License
+
+Distributed under the MIT License. _See [LICENSE](./LICENSE) for more information._
+
+### Contact
+
+To find out more about the [Analytics Unit](https://www.nhsx.nhs.uk/key-tools-and-info/nhsx-analytics-unit/) visit our [project website](https://nhsx.github.io/AnalyticsUnit/projects.html) or get in touch at [analytics-unit@nhsx.nhs.uk](mailto:analytics-unit@nhsx.nhs.uk).
+
+### Acknowledgements
