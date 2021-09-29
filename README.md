@@ -364,13 +364,11 @@ In this notebook we introduce the patient agent and its methods including:
 
 In this notebook we walk through how to run a simulation with a very simple intelligence layer and interactions. Please see above for more information about the simulation configuration script and the intelligence layer (we will not go into detail about the intelligence layer in the notebook). Here we will be using the files in template/example, and going through main processes that are called when `patient_abm.simulation.run.simulate` is executed (which is the function called by the CLI command `patient_abm simulation run`)
 
-# Usage
-
-### Roadmap
+# Roadmap
 
 See the [open issues](https://github.com/nhsx/SynPath/issues) for a list of proposed features (and known issues).
 
-### Contributing
+# Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
@@ -382,12 +380,12 @@ Contributions are what make the open source community such an amazing place to l
 
 _See [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidance._
 
-### License
+# License
 
 Distributed under the MIT License. _See [LICENSE](./LICENSE) for more information._
 
-### Contact
+# Contact
 
 To find out more about the [Analytics Unit](https://www.nhsx.nhs.uk/key-tools-and-info/nhsx-analytics-unit/) visit our [project website](https://nhsx.github.io/AnalyticsUnit/projects.html) or get in touch at [analytics-unit@nhsx.nhs.uk](mailto:analytics-unit@nhsx.nhs.uk).
 
-### Acknowledgements
+# Acknowledgements
