@@ -1,6 +1,7 @@
 import copy
 import datetime
 import logging
+import pandas as pd
 from pathlib import Path
 from typing import Callable, Dict, List, Optional, Tuple, Union
 
@@ -126,13 +127,18 @@ def run_patient_simulation(
     intelligence: Callable,
     initial_environment_id: Union[str, int],
     stopping_condition_kwargs: dict,
+    events: pd.DataFrame,
+    main_logger: logging.Logger,
+    patient_logger: logging.Logger,
     log_every: int = 1,
     log_intermediate: bool = False,
     hard_stop: int = 1e8,
     log_patient_record: bool = False,
     patient_record_duplicate_action: str = "add",
     save_dir: Optional[Union[str, Path]] = None,
+    simulation_dir: Optional[Union[str, Path]] = None,
     fhir_server_url: Optional[str] = None,
+    while_break: int = 0,
 ) -> Tuple[
     PatientAgent,
     List[Union[AandEEnvironmentAgent, EnvironmentAgent, GPEnvironmentAgent, COEnvironmentAgent, OPEnvironmentAgent, IPEnvironmentAgent]],
@@ -200,41 +206,6 @@ def run_patient_simulation(
         Returns updated patients and environments
     """
 
-    if simulation_id is None:
-        simulation_id = make_uuid()
-
-    if log_every < 5:
-        print(
-            f"WARNING: Simulation with simulation_id={simulation_id} "
-            f"will log every {log_every} steps. Such frequent logging "
-            "may slow down the simulation."
-        )
-
-    if save_dir is not None:
-        if isinstance(save_dir, str):
-            save_dir = Path(save_dir)
-
-        simulation_dir = save_dir / simulation_id
-        simulation_dir.mkdir(exist_ok=True, parents=True)
-
-        print(
-            f"Patient {patient.patient_id} simulation outputs saved to "
-            f"{simulation_dir}\n"
-        )
-
-        configure_logger("simulate_main_logger", simulation_dir / "main.log")
-        configure_logger(
-            "simulate_patient_logger", simulation_dir / "patient.log"
-        )
-
-    else:
-
-        configure_logger("simulate_main_logger")
-        configure_logger("simulate_patient_logger")
-
-    main_logger = logging.getLogger("simulate_main_logger")
-    patient_logger = logging.getLogger("simulate_patient_logger")
-
     patient_time = patient.start_time
     environment = environments[initial_environment_id]
 
@@ -260,9 +231,14 @@ def run_patient_simulation(
 
     simulation_log_msgs = []
 
-    while not is_stop:
+    if not patient.alive:
+        print("Patient" + str(patient.patient_id) + " was recorded as died on their last encouter so ceasing their simulation")
+        next_environment_id_to_prob = 0
+        next_environment_id_to_time = 0
+    else:
+        # while not is_stop:
         if step >= hard_stop:
-            break
+            while_break = 1
 
         # NOTE: Currently next_environment_id_to_prob and
         # next_environment_id_to_time are not being used or saved.
@@ -298,6 +274,10 @@ def run_patient_simulation(
 
         real_time = datetime.datetime.now()
         step += 1
+
+        jj = len(events)
+        events.loc[jj] = [patient.patient_id, next_environment_id, patient_time]
+        events.sort_values(by = ['patient_time'])
 
         if log_intermediate:
             simulation_log_msgs.append(
@@ -350,12 +330,12 @@ def run_patient_simulation(
 
         environments[environment.environment_id] = environment
 
-        if not patient.alive:
-            # TODO: maybe not stop here, may want to do clean up actions
-            # e.g. extract & donate organs
-            is_stop = True
-            stopping_reason = "death"
-            break
+        # if not patient.alive:
+        #     # TODO: maybe not stop here, may want to do clean up actions
+        #     # e.g. extract & donate organs
+        #     is_stop = True
+        #     stopping_reason = "death"
+        #     break
 
         is_stop = stopping_condition(
             step=step,
@@ -366,7 +346,8 @@ def run_patient_simulation(
             **stopping_condition_kwargs,
         )
         if not is_stop:
-            environment = environments[next_environment_id]
+            if patient.alive: #hack to overcome unknown error
+                environment = environments[next_environment_id]
         else:
             stopping_reason = stopping_condition_kwargs[
                 "stopping_condition_name"
@@ -416,7 +397,7 @@ def run_patient_simulation(
                 f"patient_id {patient.patient_id}: {e}"
             )
 
-    return patient, environments, simulation_id
+    return patient, environments, simulation_id, events, while_break
 
 
 def simulate(config: dict) -> dict:
@@ -461,16 +442,71 @@ def simulate(config: dict) -> dict:
         copy.deepcopy(environments) for _ in range(len(patients))
     ]
 
-    # TODO: decide whether save_dir naming convention / folder
-    # depth structure should be nested for multiple patients
-
     patient_id_to_agents = {}
 
-    for patient, environments, initial_environment_id in zip(
-        patients, environments_copies, initial_environment_ids
-    ):
+    # Logging Setup
+    # TODO: decide whether save_dir naming convention / folder
+    # depth structure should be nested for multiple patients
+    
+    simulation_id = make_uuid()
 
-        patient, environments, simulation_id = run_patient_simulation(
+    if log_every < 5:
+        print(
+            f"WARNING: Simulation with simulation_id={simulation_id} "
+            f"will log every {log_every} steps. Such frequent logging "
+            "may slow down the simulation."
+        )
+
+    if save_dir is not None:
+        if isinstance(save_dir, str):
+            save_dir = Path(save_dir)
+
+        simulation_dir = save_dir / simulation_id
+        simulation_dir.mkdir(exist_ok=True, parents=True)
+
+        print(
+            f"simulation outputs saved to "
+            f"{simulation_dir}\n"
+        )
+
+        configure_logger("simulate_main_logger", simulation_dir / "main.log")
+        configure_logger("simulate_patient_logger", simulation_dir / "patient.log")
+
+    else:
+
+        configure_logger("simulate_main_logger")
+        configure_logger("simulate_patient_logger")
+
+    main_logger = logging.getLogger("simulate_main_logger")
+    patient_logger = logging.getLogger("simulate_patient_logger")
+
+    # Events data frame
+    events = pd.DataFrame(columns = ["patient","next_environment_ids","patient_time"])
+          
+    for patient, environments, initial_environment_id in zip(
+            patients, environments_copies, initial_environment_ids
+        ):
+        
+        jj = len(events)
+        events.loc[jj] = [patient.patient_id, initial_environment_ids[0], patient.start_time]
+        events.sort_values(by = ['patient_time'])
+                
+    # Add in Loop to allocate patients etc.. to indexed values
+        globals()["patient_" + str(patient.patient_id)] = patient
+        globals()["environments_" + str(patient.patient_id)] = environments
+        globals()["initial_environment_id_" + str(patient.patient_id)] = initial_environment_id
+        
+    # Loop over event tracker and remove while loop in "run_patient_simulation"
+    ii = 0
+    while_break = 0
+    while len(events)-1 >= ii:
+    
+        patient = globals()["patient_" + str(events.iloc[ii,0])]
+        environments = globals()["environments_" + str(events.iloc[ii,0])]
+        initial_environment_id = globals()["initial_environment_id_" + str(events.iloc[ii,0])]
+        
+        ii += 1  
+        patient, environments, simulation_id, events, while_break = run_patient_simulation(
             None,
             patient,
             environments,
@@ -478,13 +514,18 @@ def simulate(config: dict) -> dict:
             intelligence,
             initial_environment_id,
             stopping_condition_kwargs,
+            events,
+            main_logger,
+            patient_logger,
             log_every,
             log_intermediate,
             hard_stop,
             log_patient_record,
             patient_record_duplicate_action,
             save_dir,
+            simulation_dir,
             fhir_server_url,
+            while_break,
         )
         patient_id_to_agents[patient.patient_id] = {
             "patient": patient,
